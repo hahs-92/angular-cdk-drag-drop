@@ -33,8 +33,21 @@ export class TodoComponent implements OnInit {
       done: false,
     });
     this.myForm.reset();
-    console.log(this.tasks);
   }
+
+  deleteTask(index: number) {
+    this.tasks.splice(index, 1);
+  }
+
+  deleteTaskInProgress(index: number) {
+    this.inprogress.splice(index, 1);
+  }
+
+  deleteTaskDone(index: number) {
+    this.done.splice(index, 1);
+  }
+
+  editTask(index: number) {}
 
   drop(event: CdkDragDrop<Itask[]>) {
     console.log(event);
