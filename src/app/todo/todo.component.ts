@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+
+import { Itask } from '../models/task.model';
 
 @Component({
   selector: 'app-todo',
@@ -8,6 +15,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class TodoComponent implements OnInit {
   myForm: FormGroup;
+  tasks: Itask[] = [{ description: 'Learn React', done: false }];
+  inprogress: Itask[] = [];
+  done: Itask[] = [];
 
   constructor(private fb: FormBuilder) {
     this.myForm = this.fb.group({
@@ -17,8 +27,30 @@ export class TodoComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit() {
-    console.log(this.myForm.value);
+  onAddTask() {
+    this.tasks.push({
+      description: this.myForm.value.task,
+      done: false,
+    });
     this.myForm.reset();
+    console.log(this.tasks);
+  }
+
+  drop(event: CdkDragDrop<Itask[]>) {
+    console.log(event);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
   }
 }
