@@ -7,4 +7,12 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  height: 100%;
+}
+
+// darle estilos al icono de check
+.mat-button.mat-accent,
+.mat-icon-button.mat-accent,
+.mat-stroked-button.mat-accent {
+  color: #00e676;
 }
