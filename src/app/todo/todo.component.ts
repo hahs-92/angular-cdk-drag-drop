@@ -18,6 +18,8 @@ export class TodoComponent implements OnInit {
   tasks: Itask[] = [{ description: 'Learn React', done: false }];
   inprogress: Itask[] = [];
   done: Itask[] = [];
+  updateIndex!: any;
+  isEditEnable: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.myForm = this.fb.group({
@@ -27,12 +29,22 @@ export class TodoComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  onSubmit() {
+    if (this.isEditEnable) {
+      this.updateTask();
+      this.myForm.reset();
+      return;
+    }
+
+    this.onAddTask();
+    this.myForm.reset();
+  }
+
   onAddTask() {
     this.tasks.push({
       description: this.myForm.value.task,
       done: false,
     });
-    this.myForm.reset();
   }
 
   deleteTask(index: number) {
@@ -47,7 +59,19 @@ export class TodoComponent implements OnInit {
     this.done.splice(index, 1);
   }
 
-  editTask(index: number) {}
+  editTask(task: Itask, index: number) {
+    this.myForm.controls['task'].setValue(task.description);
+    this.updateIndex = index;
+    this.isEditEnable = true;
+  }
+
+  updateTask() {
+    this.tasks[this.updateIndex].description = this.myForm.value.task;
+    this.tasks[this.updateIndex].done = false;
+    this.myForm.reset();
+    this.updateIndex = undefined;
+    this.isEditEnable = false;
+  }
 
   drop(event: CdkDragDrop<Itask[]>) {
     console.log(event);
